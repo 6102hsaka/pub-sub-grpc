@@ -4,17 +4,29 @@ package subject;
 
 message Empty {}
 
+message Topic {
+    string name = 1;
+}
+
 message Subscriber {
     string id = 1;
+    string topic = 2;
 }
 
 message Message {
     string id = 1;
-    string data = 2;
+    string topic = 2;
+    string data = 3;
+}
+
+message MessageResponse {
+    string name = 1;
+    string message = 2;
 }
 
 service SubjectService {
+    rpc CreateTopic(Topic) returns (Empty);
     rpc Subscribe (Subscriber) returns (stream Message);
     rpc Unsubscribe (Subscriber) returns (Empty);
-    rpc PublishMessage (stream Message) returns (Empty);
+    rpc PublishMessage (stream Message) returns (stream MessageResponse);
 }
