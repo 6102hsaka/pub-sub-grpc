@@ -97,13 +97,13 @@ export const publishMessage = (call: ServerDuplexStream<any, any>): void => {
         if (!topicSubscription.has(message.topic)) {
             err = topicNotFound(message.topic);
             logger.error(JSON.stringify(err));
-            call.write(err);
+            call.destroy(err);
         } else {
             const subscriberList = topicSubscription.get(message.topic);
             subscriberList.forEach((subscriber) =>
                 subscriber.call.write(message)
             );
-            logger.info(`Published Message: ${message}`);
+            logger.info(`[Published Message] ${JSON.stringify(message)}`);
         }
     });
 };
